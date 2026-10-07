@@ -1,7 +1,7 @@
-# NSoC · Winter Edition
-
-# DEMO LINK
+# DELOYEMENT LINK
 https://nsoc-winter-edition-10905-ayh4.vercel.app/
+
+# NSoC · Winter Edition
 
 A redesigned landing page for [Nexus Spring of Code](https://www.nsoc.in) with a **Winter Edition** theme, built for the NSoC Developer Selection Task.
 
