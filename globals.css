@@ -1,0 +1,165 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ───────── Winter Edition design tokens ───────── */
+:root {
+  --background: #f2f8fd;
+  --foreground: #0a1a2f;
+  --card: rgb(255 255 255 / 0.72);
+  --muted: #4a6079;
+  --border: rgb(10 26 47 / 0.1);
+  --primary: #0369a1;
+  --primary-foreground: #ffffff;
+  --accent: #ea580c; /* NSoC orange: the "fireside" warmth against the ice */
+  --ice: #bae6fd;
+  --aurora-a: rgb(56 189 248 / 0.35);
+  --aurora-b: rgb(129 140 248 / 0.28);
+  --aurora-c: rgb(45 212 191 / 0.25);
+  --ridge-far: #cfe3f3;
+  --ridge-mid: #a9cbe4;
+  --ridge-near: #eaf4fb;
+  --pine: #1e4d6b;
+}
+
+.dark {
+  --background: #040a16;
+  --foreground: #e8f1fb;
+  --card: rgb(14 26 46 / 0.6);
+  --muted: #94a9c4;
+  --border: rgb(186 230 253 / 0.12);
+  --primary: #38bdf8;
+  --primary-foreground: #031322;
+  --accent: #fb923c;
+  --ice: #7dd3fc;
+  --aurora-a: rgb(34 211 238 / 0.3);
+  --aurora-b: rgb(139 92 246 / 0.32);
+  --aurora-c: rgb(52 211 153 / 0.22);
+  --ridge-far: #0e2038;
+  --ridge-mid: #0a1830;
+  --ridge-near: #071225;
+  --pine: #030b18;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-accent: var(--accent);
+  --color-ice: var(--ice);
+  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
+  --font-display: "Sora Variable", var(--font-geist-sans), sans-serif;
+  --font-mono: var(--font-geist-mono);
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+  }
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: clip;
+  }
+  ::selection {
+    background: var(--ice);
+    color: #04121f;
+  }
+  :focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+}
+
+@layer components {
+  .glass {
+    background: var(--card);
+    border: 1px solid var(--border);
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+  }
+  .frost-text {
+    background: linear-gradient(120deg, var(--primary) 0%, #818cf8 55%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .section {
+    position: relative;
+    margin-inline: auto;
+    width: 100%;
+    max-width: 72rem;
+    padding: 5rem 1.25rem;
+  }
+  @media (min-width: 768px) {
+    .section {
+      padding: 7rem 2rem;
+    }
+  }
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--primary);
+  }
+}
+
+/* ───────── Aurora + ambient motion ───────── */
+@keyframes aurora-drift {
+  0%, 100% { transform: translate3d(-4%, 0, 0) scale(1); }
+  50% { transform: translate3d(4%, -3%, 0) scale(1.12); }
+}
+@keyframes twinkle {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 1; }
+}
+@keyframes spin-slow {
+  to { transform: rotate(360deg); }
+}
+
+.aurora {
+  position: absolute;
+  inset: -20% -10% auto -10%;
+  height: 80%;
+  filter: blur(70px);
+  background:
+    radial-gradient(40% 60% at 25% 30%, var(--aurora-a), transparent 70%),
+    radial-gradient(35% 55% at 65% 20%, var(--aurora-b), transparent 70%),
+    radial-gradient(35% 55% at 85% 45%, var(--aurora-c), transparent 70%);
+  animation: aurora-drift 18s ease-in-out infinite;
+  will-change: transform;
+}
+
+.star {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  border-radius: 9999px;
+  background: #fff;
+  animation: twinkle 3.5s ease-in-out infinite;
+}
+html:not(.dark) .star {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .aurora, .star { animation: none; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
